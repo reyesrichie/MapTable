@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>Casa México</string>
+		<key>address</key>
+		<string>Av. Michoacán 52, Condesa, Cuauhtémoc, DF, México</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Escuela</string>
+		<key>address</key>
+		<string>354 Serra St., Stanford, Santa Clara, CA, USA</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Instituto</string>
+		<key>address</key>
+		<string>Javier Prado Este 980, San Isidro, Lima, Peru</string>
+	</dict>
+</array>
+</plist>
