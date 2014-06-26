@@ -1,24 +1,26 @@
 //
-//  MapTableViewController.m
+//  ViewController.m
 //  MapTable
 //
-//  Created by Laboratorio San Agustin on 8/03/14.
-//  Copyright (c) 2014 Online Studio Productions LLC. All rights reserved.
+//  Created by Ricardo Reyes on 6/20/14.
+//  Copyright (c) 2014 iOS Coding Lab. All rights reserved.
 //
 
-#import "MapTableViewController.h"
-#import "MapTablePlace.h"
-#import "MapTableMapViewController.h"
+#import "ViewController.h"
+#import "Place.h"
+#import "MapViewController.h"
 
-@interface MapTableViewController ()<UITableViewDataSource, UITableViewDelegate>
-
+@interface ViewController ()<UITableViewDataSource, UITableViewDelegate>
+            
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *plist;
 @property (strong, nonatomic) NSMutableArray *places;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
-@implementation MapTableViewController
+@implementation ViewController
+
+#pragma mark - Lazy instantiators
 
 - (NSArray *)plist
 {
@@ -34,18 +36,22 @@
 {
     if (!_places)
     {
-        _places = [[NSMutableArray alloc] init];
+        _places = [NSMutableArray new];
     }
     return _places;
 }
 
+#pragma mark - View Controller Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [self.plist enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
     {
-        MapTablePlace *place = [[MapTablePlace alloc] initWithName:obj[@"name"] address:obj[@"address"] andImage:nil];
+        NSDictionary *placeDict = obj;
+        
+        Place *place = [[Place alloc] initWithName:placeDict[@"name"] address:placeDict[@"address"]];
         [self.places addObject:place];
     }];
 }
@@ -55,12 +61,15 @@
     if ([segue.identifier isEqualToString:@"MapSegue"])
     {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        MapTablePlace *place = self.places[indexPath.row];
+        Place *place = self.places[indexPath.row];
         
-        MapTableMapViewController *vc = segue.destinationViewController;
-        vc.address = place.address;
+        MapViewController *mapVC = segue.destinationViewController;
+        mapVC.name = place.name;
+        mapVC.address = place.address;
     }
 }
+
+#pragma mark - Table View Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -69,20 +78,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MapTableViewControllerCell"];
-    MapTablePlace *place = self.places[indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    Place *place = self.places[indexPath.row];
     cell.textLabel.text = place.name;
     cell.detailTextLabel.text = place.address;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self performSegueWithIdentifier:@"MapSegue" sender:self];
-}
-
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
